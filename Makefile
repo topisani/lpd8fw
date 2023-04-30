@@ -7,7 +7,7 @@ TARGET = lpd8fw
 # building variables
 ######################################
 # debug build?
-DEBUG ?= 0
+DEBUG ?= 1
 # optimization
 OPT ?= -Os
 
@@ -77,7 +77,8 @@ C_INCLUDES =  \
 	-Ilibs/GD32F30x/CMSIS/ \
 	-Ilibs/GD32F30x/CMSIS/GD/GD32F30x/Include/ \
 	-Ilibs/GD32F30x/GD32F30x_standard_peripheral/Include/ \
-	-Ilibs/SEGGER_RTT_V788/RTT/
+	-Ilibs/SEGGER_RTT_V788/Config \
+	-Ilibs/SEGGER_RTT_V788/RTT/ \
 
 #######################################
 # binaries
@@ -209,3 +210,19 @@ $(BUILD_DIR):
 #######################################
 clean:
 	-rm -fR $(BUILD_DIR)
+	
+
+#######################################
+# flash
+#######################################
+
+.PHONY: jlink clean
+jlink:
+	JLinkExe -Device GD32F303RC -If SWD -Speed 4000
+	
+flash:
+	JLinkExe -Device GD32F303RC -If SWD -Speed 4000 -CommandFile scripts/flash.jlink
+	
+	
+gdbserver:
+	JLinkGDBServer -Device GD32F303RC -If SWD -Speed 4000 & JLinkRTTClientExe

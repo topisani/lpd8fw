@@ -1,0 +1,3 @@
+loadfile build/lpd8fw.hex
+reset
+exit

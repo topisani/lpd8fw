@@ -10,8 +10,8 @@ bool gpio_pin_read(GpioPin pin) {
   return gpio_input_bit_get(pin.port, pin.pin) == SET;
 }
 
-void gpio_pin_write(GpioPin pin, bool value) {
-  gpio_bit_write(pin.port, pin.pin, value);
+void gpio_pin_write(GpioPin pin, bool state) {
+  gpio_bit_write(pin.port, pin.pin, state);
 }
 
 void adc_init(uint32_t adc_periph) {
@@ -96,3 +96,25 @@ bool potmeter_poll(Potmeter *pot) {
   }
   return false;
 }
+
+void button_init(Button *btn, GpioPin pin) {
+  btn->pin = pin;
+  gpio_pin_init(pin, GPIO_MODE_IPU);
+}
+
+bool button_poll(Button *btn) {
+  bool new_state = !gpio_pin_read(btn->pin);
+  if (new_state != btn->state) {
+    btn->state = new_state;
+    return true;
+  }
+  return false;
+}
+
+void led_init(GpioPin pin) {
+  gpio_pin_init(pin, GPIO_MODE_OUT_PP);
+  gpio_pin_write(pin, true);
+}
+
+void led_set(GpioPin pin, bool state) { gpio_pin_write(pin, !state); }
+

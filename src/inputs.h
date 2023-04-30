@@ -14,7 +14,7 @@ typedef struct {
 
 void gpio_pin_init(GpioPin pin, uint32_t mode);
 bool gpio_pin_read(GpioPin pin);
-void gpio_pin_write(GpioPin pin, bool value);
+void gpio_pin_write(GpioPin pin, bool state);
 
 typedef struct {
   uint32_t periph;
@@ -35,3 +35,15 @@ typedef struct {
 
 void potmeter_init(Potmeter *pot, GpioPin pin);
 bool potmeter_poll(Potmeter *pot);
+
+typedef struct {
+  GpioPin pin;
+  bool state;
+} Button;
+
+void button_init(Button *btn, GpioPin pin);
+/// Returns true if the button value has changed
+bool button_poll(Button *btn);
+
+void led_init(GpioPin pin);
+void led_set(GpioPin pin, bool state);

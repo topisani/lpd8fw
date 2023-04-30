@@ -9,6 +9,7 @@ static void rcu_config();
 static void pots_init();
 static void pots_poll();
 static Potmeter pots[8] = {0};
+static Potmeter pads[8] = {0};
 
 int main(void) {
   rcu_config();
@@ -53,12 +54,27 @@ static void pots_init() {
   potmeter_init(&pots[5], POT6_PIN);
   potmeter_init(&pots[6], POT7_PIN);
   potmeter_init(&pots[7], POT8_PIN);
+  
+  potmeter_init(&pads[0], PAD1_PIN);
+  potmeter_init(&pads[1], PAD2_PIN);
+  potmeter_init(&pads[2], PAD3_PIN);
+  potmeter_init(&pads[3], PAD4_PIN);
+  potmeter_init(&pads[4], PAD5_PIN);
+  potmeter_init(&pads[5], PAD6_PIN);
+  potmeter_init(&pads[6], PAD7_PIN);
+  potmeter_init(&pads[7], PAD8_PIN);
 }
 
 static void pots_poll() {
   for (int i = 0; i < 8; i++) {
     if (potmeter_poll(&pots[i])) {
       printf("POT%d: %d\n", i + 1, pots[i].val);
+    }
+  }
+  
+  for (int i = 0; i < 8; i++) {
+    if (potmeter_poll(&pads[i])) {
+      printf("PAD%d: %d\n", i + 1, pads[i].val);
     }
   }
 }

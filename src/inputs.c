@@ -1,5 +1,6 @@
 #include "inputs.h"
 #include "systick.h"
+#include <stdlib.h>
 
 void gpio_pin_init(GpioPin pin, uint32_t mode) {
   gpio_init(pin.port, mode, GPIO_OSPEED_10MHZ, pin.pin);
@@ -32,7 +33,7 @@ uint16_t adc_sample(AdcChannel adc) {
 
   /* ADC regular channel config */
   adc_regular_channel_config(adc.periph, 0U, adc.channel,
-                             ADC_SAMPLETIME_7POINT5);
+                             ADC_SAMPLETIME_239POINT5);
   /* ADC software trigger enable */
   adc_software_trigger_enable(adc.periph, ADC_REGULAR_CHANNEL);
 
@@ -89,7 +90,9 @@ void potmeter_init(Potmeter *pot, GpioPin pin) {
 
 bool potmeter_poll(Potmeter *pot) {
   uint16_t new_val = adc_sample(pot->adc);
-  bool changed = new_val == pot->val;
-  pot->val = new_val;
-  return changed;
+  if (abs((int)new_val - ((int)pot->val)) > 16) {
+    pot->val = new_val;
+    return true;
+  }
+  return false;
 }

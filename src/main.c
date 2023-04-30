@@ -9,21 +9,20 @@ int main(void) {
   systick_config();
 
   /* print out the clock frequency of system, AHB, APB1 and APB2 */
-  printf("\r\nCK_SYS is %d", rcu_clock_freq_get(CK_SYS));
-  printf("\r\nCK_AHB is %d", rcu_clock_freq_get(CK_AHB));
-  printf("\r\nCK_APB1 is %d", rcu_clock_freq_get(CK_APB1));
-  printf("\r\nCK_APB2 is %d", rcu_clock_freq_get(CK_APB2));
-  
+  printf("CK_SYS is %d\n", rcu_clock_freq_get(CK_SYS));
+  printf("CK_AHB is %d\n", rcu_clock_freq_get(CK_AHB));
+  printf("CK_APB1 is %d\n", rcu_clock_freq_get(CK_APB1));
+  printf("CK_APB2 is %d\n", rcu_clock_freq_get(CK_APB2));
+
   rcu_periph_clock_enable(PROGRAM_LED_PIN.clock);
 
   gpio_init(PROGRAM_LED_PIN.port, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ,
             PROGRAM_LED_PIN.pin);
-            
-  
 
   while (1) {
     gpio_bit_set(PROGRAM_LED_PIN.port, PROGRAM_LED_PIN.pin);
     delay_1ms(500);
+    printf("Hello World!\n");
     gpio_bit_reset(PROGRAM_LED_PIN.port, PROGRAM_LED_PIN.pin);
     delay_1ms(500);
   }

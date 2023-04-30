@@ -220,9 +220,12 @@ clean:
 jlink:
 	JLinkExe -Device GD32F303RC -If SWD -Speed 4000
 	
-flash:
-	JLinkExe -Device GD32F303RC -If SWD -Speed 4000 -CommandFile scripts/flash.jlink
+flash: all
+	echo "loadfile build/lpd8fw.hex \n reset \n exit \n" | JLinkExe -Device GD32F303RC -If SWD -Speed 4000
 	
+run: flash
+	JLinkGDBServer -Device GD32F303RC -If SWD -Speed 4000 -nohalt & JLinkRTTClientExe
 	
-gdbserver:
-	JLinkGDBServer -Device GD32F303RC -If SWD -Speed 4000 & JLinkRTTClientExe
+stock: 
+	echo "loadfile stock_fw/lpd8_mkii_stock_fw.bin 0x08000000 \n reset \n exit \n" | JLinkExe -Device GD32F303RC -If SWD -Speed 4000
+

@@ -29,6 +29,7 @@ C_SOURCES =  \
 	src/main.c \
 	src/gd32f30x_it.c \
 	src/systick.c \
+	src/inputs.c \
 	libs/GD32F30x/GD32F30x_standard_peripheral/Source/gd32f30x_adc.c \
 	libs/GD32F30x/GD32F30x_standard_peripheral/Source/gd32f30x_bkp.c \
 	libs/GD32F30x/GD32F30x_standard_peripheral/Source/gd32f30x_can.c \
